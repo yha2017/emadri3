@@ -2,15 +2,14 @@ Package: emadri3
 Type: Package
 Title: Return product lists according to user's input
 Version: 1.0
-Author: Andy Yu
-Maintainer: andy@emadri.com
+Authors@R: person("Andy", "Yu", email = "andy@emadri.com",
+                  role = c("aut", "cre"))
 Description: Return a list of products' ID according what user's input said.
-License: What license is it under?
+License: BSD
 Encoding: UTF-8
 LazyData: true
 Imports:
     lubridate,
-    tidytext,
     gutenbergr,
     janeaustenr,
     dplyr,
@@ -24,6 +23,5 @@ Imports:
     openNLPmodels.en,
     sqldf,
     udpipe,
-    dplyr,
     RSQLite
 RoxygenNote: 6.1.1.9000
