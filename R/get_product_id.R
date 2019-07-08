@@ -1,4 +1,4 @@
-#' get_product_id Function
+ #' get_product_id Function
 #'
 #' This function allows you to get a list of product_id according to user's input text.
 #' @param user_input_text User's input text
@@ -25,7 +25,7 @@ get_product_id <- function(user_input_text, full_data, N){
   adj_df <- na.omit(adj_df)
   category_Df <- merge(x = tidy_input, y = full_data,
                        by.x = "words", by.y = "item_name", all.x = TRUE)
-  esults <- merge(x = adj_df, y = category_Df, by = "product_id", all.x = TRUE, all.y = TRUE)
+  results <- merge(x = adj_df, y = category_Df, by = "product_id", all.x = TRUE, all.y = TRUE)
 
   results <- results$product_id
   results <- na.omit(results)
