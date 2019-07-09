@@ -25,8 +25,9 @@ get_product_id <- function(user_input_text, full_data, N){
   adj_df <- na.omit(adj_df)
   category_Df <- merge(x = tidy_input, y = full_data,
                        by.x = "words", by.y = "item_name", all.x = TRUE)
-  results <- merge(x = adj_df, y = category_Df, by = "product_id", all.x = TRUE, all.y = TRUE)
-
+  results <- merge(x = adj_df, y = category_Df, by = "product_id")
+  
+  results <- results[order(results$weight.x, decreasing = TRUE),]
   results <- results$product_id
   results <- na.omit(results)
   results <- results[!duplicated(results)]
