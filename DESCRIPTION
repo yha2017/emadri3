@@ -20,7 +20,6 @@ Depends:
     tidyr,
     data.table,
     NLP,
-    openNLPmodels.en,
     sqldf,
     RSQLite
 RoxygenNote: 6.1.1.9000
