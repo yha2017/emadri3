@@ -10,8 +10,9 @@
 #' get_product_id("I need a comfortable dress", read.csv("sentiment_df_v1"), 3 )
 
 
-get_product_id <- function(user_input_text, full_data, N){
+get_product_id2 <- function(user_input_text, full_data){
   user_id <- 1
+  sentiment_user <- exploratory::get_sentiment(user_input_text)
   df <- data.frame(user_id, user_input_text)
   input_matrix <- df_to_matrix(df)
   input_df <- data.frame(input_matrix)
@@ -26,13 +27,23 @@ get_product_id <- function(user_input_text, full_data, N){
   category_Df <- merge(x = tidy_input, y = full_data,
                        by.x = "words", by.y = "item_name", all.x = TRUE)
   results <- merge(x = adj_df, y = category_Df, by = "product_id")
-  
-  results <- results[order(results$weight.x, decreasing = TRUE),]
-  results <- results$product_id
-  results <- na.omit(results)
-  results <- results[!duplicated(results)]
-  results <- as.character(results)
-  results = results[which(nchar(results) == 10)]
-  results <- head(results, N)
-  return(results)
+
+  if(sentiment_user >= 0){
+    results <- results[which(results$star_rating.x >= 3),]
+    results <- results[order(results$weight.x, decreasing = TRUE),]
+    results <- results$product_id
+    results <- na.omit(results)
+    results <- results[!duplicated(results)]
+    results <- as.character(results)
+    results = results[which(nchar(results) == 10)]
+  }else{
+    results <- results[which(results$star_rating.x < 3),]
+    results <- results[order(results$weight.x, decreasing = TRUE),]
+    results <- results$product_id
+    results <- na.omit(results)
+    results <- results[!duplicated(results)]
+    results <- as.character(results)
+    results = results[which(nchar(results) == 10)]
+  }
+  return(head(results,3))
 }
