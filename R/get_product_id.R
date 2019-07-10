@@ -21,10 +21,10 @@ get_product_id <- function(user_input_text, full_data){
     gather(words, count, -user_id) -> tidy_input
 
   adj_df <- merge(x = tidy_input, y = full_data,
-                  by.x = "words", by.y = "value", all.x = TRUE)
+                  by.x = "words", by.y = "value")
   adj_df <- na.omit(adj_df)
   category_Df <- merge(x = tidy_input, y = full_data,
-                       by.x = "words", by.y = "item_name", all.x = TRUE)
+                       by.x = "words", by.y = "item_name")
   
   if(nrow(merge(x = adj_df, y = category_Df, by = "product_id")) == 0){
     if(nrow(adj_df) == 0 && nrow(category_Df) != 0){
