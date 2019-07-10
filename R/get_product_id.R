@@ -29,31 +29,85 @@ get_product_id <- function(user_input_text, full_data){
   if(nrow(merge(x = adj_df, y = category_Df, by = "product_id")) == 0){
     if(nrow(adj_df) == 0 && nrow(category_Df) != 0){
       results <- category_Df
+      
+      if(sentiment_user >= 0){
+        results <- results[which(results$star_rating >= 3),]
+        results <- results[order(results$weight, decreasing = TRUE),]
+        results <- results$product_id
+        results <- na.omit(results)
+        results <- results[!duplicated(results)]
+        results <- as.character(results)
+        results = results[which(nchar(results) == 10)]
+      }else{
+        results <- results[which(results$star_rating < 3),]
+        results <- results[order(results$weight, decreasing = TRUE),]
+        results <- results$product_id
+        results <- na.omit(results)
+        results <- results[!duplicated(results)]
+        results <- as.character(results)
+        results = results[which(nchar(results) == 10)]
+      }
     }else if(nrow(adj_df) != 0 && nrow(category_Df) == 0){
       results <- adj_df
+      if(sentiment_user >= 0){
+        results <- results[which(results$star_rating >= 3),]
+        results <- results[order(results$weight, decreasing = TRUE),]
+        results <- results$product_id
+        results <- na.omit(results)
+        results <- results[!duplicated(results)]
+        results <- as.character(results)
+        results = results[which(nchar(results) == 10)]
+      }else{
+        results <- results[which(results$star_rating < 3),]
+        results <- results[order(results$weight, decreasing = TRUE),]
+        results <- results$product_id
+        results <- na.omit(results)
+        results <- results[!duplicated(results)]
+        results <- as.character(results)
+        results = results[which(nchar(results) == 10)]
+    }
     }else{
-      results <- catefory_Df
+        results <- catefory_Df
+        
+        if(sentiment_user >= 0){
+          results <- results[which(results$star_rating >= 3),]
+          results <- results[order(results$weight, decreasing = TRUE),]
+          results <- results$product_id
+          results <- na.omit(results)
+          results <- results[!duplicated(results)]
+          results <- as.character(results)
+          results = results[which(nchar(results) == 10)]
+      }else{
+          results <- results[which(results$star_rating < 3),]
+          results <- results[order(results$weight, decreasing = TRUE),]
+          results <- results$product_id
+          results <- na.omit(results)
+          results <- results[!duplicated(results)]
+          results <- as.character(results)
+          results = results[which(nchar(results) == 10)]
+      }
     }
   }else if(nrow(merge(x = adj_df, y = category_Df, by = "product_id")) != 0){
     results <- merge(x = adj_df, y = category_Df, by = "product_id")
-  }
-  
-  if(sentiment_user >= 0){
-    results <- results[which(results$star_rating.x >= 3),]
-    results <- results[order(results$weight.x, decreasing = TRUE),]
-    results <- results$product_id
-    results <- na.omit(results)
-    results <- results[!duplicated(results)]
-    results <- as.character(results)
-    results = results[which(nchar(results) == 10)]
+    if(sentiment_user >= 0){
+      results <- results[which(results$star_rating.x >= 3),]
+      results <- results[order(results$weight.x, decreasing = TRUE),]
+      results <- results$product_id
+      results <- na.omit(results)
+      results <- results[!duplicated(results)]
+      results <- as.character(results)
+      results = results[which(nchar(results) == 10)]
   }else{
-    results <- results[which(results$star_rating.x < 3),]
-    results <- results[order(results$weight.x, decreasing = TRUE),]
-    results <- results$product_id
-    results <- na.omit(results)
-    results <- results[!duplicated(results)]
-    results <- as.character(results)
-    results = results[which(nchar(results) == 10)]
+      results <- results[which(results$star_rating.x < 3),]
+      results <- results[order(results$weight.x, decreasing = TRUE),]
+      results <- results$product_id
+      results <- na.omit(results)
+      results <- results[!duplicated(results)]
+      results <- as.character(results)
+      results = results[which(nchar(results) == 10)]
   }
+  }
+
+  
   return(head(results,3))
 }
