@@ -25,8 +25,19 @@ get_product_id <- function(user_input_text, full_data){
   adj_df <- na.omit(adj_df)
   category_Df <- merge(x = tidy_input, y = full_data,
                        by.x = "words", by.y = "item_name", all.x = TRUE)
-  results <- merge(x = adj_df, y = category_Df, by = "product_id")
-
+  
+  if(nrow(merge(x = adj_df, y = category_Df, by = "product_id")) == 0){
+    if(nrow(adj_df) == 0 && nrow(category_Df) != 0){
+      results <- category_Df
+    }else if(nrow(adj_df) != 0 && nrow(category_Df) == 0){
+      results <- adj_df
+    }else{
+      results <- catefory_Df
+    }
+  }else if(nrow(merge(x = adj_df, y = category_Df, by = "product_id")) != 0){
+    results <- merge(x = adj_df, y = category_Df, by = "product_id")
+  }
+  
   if(sentiment_user >= 0){
     results <- results[which(results$star_rating.x >= 3),]
     results <- results[order(results$weight.x, decreasing = TRUE),]
