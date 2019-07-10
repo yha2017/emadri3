@@ -1,4 +1,4 @@
-get_product_id2 <- function(user_input_text, full_data){
+get_product_id <- function(user_input_text, full_data){
   user_id <- 1
   sentiment_user <- exploratory::get_sentiment(user_input_text)
   df <- data.frame(user_id, user_input_text)
@@ -15,15 +15,15 @@ get_product_id2 <- function(user_input_text, full_data){
   category_Df <- merge(x = tidy_input, y = full_data,
                        by.x = "words", by.y = "item_name", all.x = TRUE)
   
-  if(is.na(merge(x = adj_df, y = category_Df, by = "product_id")) == TRUE){
-    if(is.na(adj_df) == TRUE && is.na(category_Df) == FALSE){
+  if(nrow(merge(x = adj_df, y = category_Df, by = "product_id")) == 0){
+    if(nrow(adj_df) == 0 && nrow(category_Df) != 0){
       results <- category_Df
-    }else if(is.na(adj_df) == FALSE && is.na(category_Df) == TRUE){
+    }else if(nrow(adj_df) != 0 && nrow(category_Df) == 0){
       results <- adj_df
     }else{
       results <- catefory_Df
     }
-  }else if(is.na(merge(x = adj_df, y = category_Df, by = "product_id")) == FALSE){
+  }else if(nrow(merge(x = adj_df, y = category_Df, by = "product_id")) != 0){
     results <- merge(x = adj_df, y = category_Df, by = "product_id")
   }
   
