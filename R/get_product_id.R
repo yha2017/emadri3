@@ -8,7 +8,6 @@
 #' @examples
 #' get_product_id("I need a comfortable dress", read.csv("sentiment_df_v1"), 3 )
 
-
 get_product_id <- function(user_input_text, full_data){
   user_id <- 1
   sentiment_user <- exploratory::get_sentiment(user_input_text)
