@@ -18,22 +18,19 @@ get_product_id <- function(user_input_text, full_data){
   names(input_df)[1] <- "user_id"
   input_df %>%
     gather(words, count, -user_id) -> tidy_input
-
   adj_df <- merge(x = full_data, y = tidy_input,
                   by.x = "value", by.y = "words")
   adj_df <- na.omit(adj_df)
   category_Df <- merge(x = full_data, y = tidy_input,
                        by.x = "item_name", by.y = "words")
-
 if(nrow(merge(x = adj_df, y = category_Df, by = "product_id")) == 0){
     if(nrow(adj_df) == 0 && nrow(category_Df) != 0){
       results <- category_Df
       
       if(sentiment_user >= 0){
         results <- results[which(results$star_rating >= 3),]
-      results$attributes.x <- factor(results$attributes.x, levels = c("color", "comfort", "adj"))
-      results <- results[order(results$attributes.x), ]        
-      results <- results[order(results$weight, decreasing = TRUE),]
+      results <- results[order(order(match(c("color", "comfort", "adj"), results$attributes))), ]
+        results <- results[order(results$weight, decreasing = TRUE),]
         results <- results$product_id
         results <- na.omit(results)
         results <- results[!duplicated(results)]
@@ -41,8 +38,7 @@ if(nrow(merge(x = adj_df, y = category_Df, by = "product_id")) == 0){
         results = results[which(nchar(results) == 10)]
       }else{
         results <- results[which(results$star_rating < 3),]
-        results$attributes.x <- factor(results$attributes.x, levels = c("color", "comfort", "adj"))
-        results <- results[order(results$attributes.x), ]
+      results <- results[order(order(match(c("color", "comfort", "adj"), results$attributes))), ]
         results <- results[order(results$weight, decreasing = TRUE),]
         results <- results$product_id
         results <- na.omit(results)
@@ -54,8 +50,7 @@ if(nrow(merge(x = adj_df, y = category_Df, by = "product_id")) == 0){
       results <- adj_df
       if(sentiment_user >= 0){
         results <- results[which(results$star_rating >= 3),]
-        results$attributes.x <- factor(results$attributes.x, levels = c("color", "comfort", "adj"))
-      results <- results[order(results$attributes.x), ]
+      results <- results[order(order(match(c("color", "comfort", "adj"), results$attributes))), ]
         results <- results[order(results$weight, decreasing = TRUE),]
         results <- results$product_id
         results <- na.omit(results)
@@ -64,8 +59,7 @@ if(nrow(merge(x = adj_df, y = category_Df, by = "product_id")) == 0){
         results = results[which(nchar(results) == 10)]
       }else{
         results <- results[which(results$star_rating < 3),]
-        results$attributes.x <- factor(results$attributes.x, levels = c("color", "comfort", "adj"))
-      results <- results[order(results$attributes.x), ]
+      results <- results[order(order(match(c("color", "comfort", "adj"), results$attributes))), ]
         results <- results[order(results$weight, decreasing = TRUE),]
         results <- results$product_id
         results <- na.omit(results)
@@ -81,8 +75,7 @@ if(nrow(merge(x = adj_df, y = category_Df, by = "product_id")) == 0){
         
         if(sentiment_user >= 0){
           results <- results[which(results$star_rating >= 3),]
-          results$attributes.x <- factor(results$attributes.x, levels = c("color", "comfort", "adj"))
-      results <- results[order(results$attributes.x), ]
+      results <- results[order(order(match(c("color", "comfort", "adj"), results$attributes))), ]
           results <- results[order(results$weight, decreasing = TRUE),]
           results <- results$product_id
           results <- na.omit(results)
@@ -91,8 +84,7 @@ if(nrow(merge(x = adj_df, y = category_Df, by = "product_id")) == 0){
           results = results[which(nchar(results) == 10)]
       }else{
           results <- results[which(results$star_rating < 3),]
-          results$attributes.x <- factor(results$attributes.x, levels = c("color", "comfort", "adj"))
-          results <- results[order(results$attributes.x), ]
+      results <- results[order(order(match(c("color", "comfort", "adj"), results$attributes))), ]
           results <- results[order(results$weight, decreasing = TRUE),]
           results <- results$product_id
           results <- na.omit(results)
@@ -105,8 +97,7 @@ if(nrow(merge(x = adj_df, y = category_Df, by = "product_id")) == 0){
     results <- merge(x = adj_df, y = category_Df, by = "product_id")
     if(sentiment_user >= 0){
       results <- results[which(results$star_rating.x >= 3),]
-      results$attributes.x <- factor(results$attributes.x, levels = c("color", "comfort", "adj"))
-      results <- results[order(results$attributes.x), ]
+      results <- results[order(order(match(c("color", "comfort", "adj"), results$attributes))), ]
       results <- results[order(results$weight.x, decreasing = TRUE),]
       results <- results$product_id
       results <- na.omit(results)
@@ -124,7 +115,6 @@ if(nrow(merge(x = adj_df, y = category_Df, by = "product_id")) == 0){
       results = results[which(nchar(results) == 10)]
   }
   }
-
  results <- as.data.frame(results)
  results <- head(results, 3)
  results_final <- merge(x = results, y = basic_info, by.x = "results", by.y = "product_id") 
