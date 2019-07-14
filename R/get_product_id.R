@@ -14,7 +14,7 @@ get_product_id <- function(user_input_text, full_data){
   sentiment_user <- exploratory::get_sentiment(user_input_text)
   df <- data.frame(user_id, user_input_text)
   input_matrix <- df_to_matrix(df)
-  input_df <- data.frame(input_matrix)
+  input_df <- as.data.frame(input_matrix)
   input_df <- setDT(input_df, keep.rownames = TRUE)[]
   names(input_df)[1] <- "user_id"
   input_df %>%
@@ -25,8 +25,8 @@ get_product_id <- function(user_input_text, full_data){
   adj_df <- na.omit(adj_df)
   category_Df <- merge(x = tidy_input, y = full_data,
                        by.x = "words", by.y = "item_name")
-  
-  if(nrow(merge(x = adj_df, y = category_Df, by = "product_id")) == 0){
+
+if(nrow(merge(x = adj_df, y = category_Df, by = "product_id")) == 0){
     if(nrow(adj_df) == 0 && nrow(category_Df) != 0){
       results <- category_Df
       
@@ -65,8 +65,11 @@ get_product_id <- function(user_input_text, full_data){
         results <- results[!duplicated(results)]
         results <- as.character(results)
         results = results[which(nchar(results) == 10)]
-    }
-    }else{
+      }
+    }else if(nrow(adj_df) == 0 && nrow(category_Df) == 0){
+        results = "There is no match according to your input, sorry."
+      }
+     else{
         results <- catefory_Df
         
         if(sentiment_user >= 0){
@@ -108,6 +111,8 @@ get_product_id <- function(user_input_text, full_data){
   }
   }
 
-  
-  return(head(results,3))
+ results <- as.data.frame(results)
+ results <- head(results, 3)
+ results_final <- merge(x = results, y = basic_info, by.x = "results", by.y = "product_id") 
+  return(results_final)
 }
