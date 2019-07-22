@@ -1,7 +1,7 @@
 # emadri3
 Return Top three product according to user's input
 
-#Remember to run codes below before you use the function get_product_id:
+#Updated the sentiment part. There is an available package has higher accuracy rate than mine. To download it, remember to run codes below before you use the function get_product_id:
 
   devtools::install_github("paulhendricks/anonymizer", force = TRUE)
   
