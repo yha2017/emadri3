@@ -2,7 +2,7 @@ Package: emadri3
 Type: Package
 Title: Return product lists according to user's input
 Version: 1.0
-Authors@R: person("Andy", "Yu", email = "andy@emadri.com",
+Authors@R: person("Huaian", "Yu", email = "andy@emadri.com",
                   role = c("aut", "cre"))
 Description: Return a list of products' ID according what user's input said.
 License: BSD
